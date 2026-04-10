@@ -5,19 +5,19 @@ function Input() {
     const [inputText, setText]= useState("")
     const [items, setItem] =useState([]);
 
-    function handleClick() {
+    function handleClick(event) {
         setItem(prevItems => {
            return [...prevItems, inputText]
         });
         setText("")
+
+        event.preventDefault();
     }
 
     function handleChange(event) {
-        const {name, value} = event.target;
+        const {value} = event.target;
 
-        setText(value)
-
-        console.log(value)
+        setText(value);
     }
 
     return(<form>
@@ -26,7 +26,7 @@ function Input() {
           <button onClick={handleClick}>Add</button>
         </div>
         <div className="card">
-           <p>total</p>
+          {items.map((item,index) => {return <h3 key={index}>{item} </h3>})}
         </div>
       </form>)
 }
