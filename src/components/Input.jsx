@@ -1,18 +1,18 @@
 import React, {useState} from "react";
-
+import Items from "./Items";
 
 function Input() {
-    const [inputText, setText]= useState("")
+    const [inputText, setText]= useState("");
     const [items, setItem] =useState([]);
+    
 
     function handleClick(event) {
-        setItem(prevItems => {
-           return [...prevItems, inputText]
-        });
-        setText("")
-
-        event.preventDefault();
-    }
+      if (inputText !== "") {
+          setItem(prevItems => [...prevItems, inputText]);
+          setText("");
+      }
+      event.preventDefault();
+  }
 
     function handleChange(event) {
         const {value} = event.target;
@@ -20,13 +20,17 @@ function Input() {
         setText(value);
     }
 
+    function handleDelete(id) {
+      setItem(prevItems=> {return prevItems.filter((item,index) => {return index !== id})});
+    }
+
     return(<form>
         <div className="input-container">
           <input onChange={handleChange} type="text" name="input" value={inputText}/>
           <button onClick={handleClick}>Add</button>
         </div>
-        <div className="card">
-          {items.map((item,index) => {return <h3 key={index}>{item} </h3>})}
+        <div>
+          {items.map((item,index) => <Items text={item} id={index} key={index} delete={handleDelete}/>)}
         </div>
       </form>)
 }
